@@ -2,5 +2,9 @@ class A(object):
     def bark():
         print "ohai"
 
-class B(object):
+class B(A):
+    def blub(self):
+        self.bark()
+
+class C(B):
     pass

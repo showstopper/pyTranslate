@@ -3,20 +3,28 @@ import sys
 import cStringIO
 import os.path
 
+
 if __name__ == '__main__':
     module_name = sys.argv[1].strip(".py")
     module = __import__(module_name)
     code_buffer = cStringIO.StringIO()
     for class_decl in inspect.getmembers(module, inspect.isclass):
 
-        try:
-            print class_decl[1].__class__
-        except AttributeError:
-            print "Only new style classes are supported, inherit from object!"
-
         class_name = class_decl[0] 
-        l = "%s: class {\n" % (class_name)
-        code_buffer.write(l) # class name, e.g. "A: class {"
+        l = "%s: class " % (class_name)
+        code_buffer.write(l)
+
+        try: # Inheritance
+            name = class_decl[1].__base__.__name__
+            if not name == "object": # yay, inheritance
+                l = "extends %s " % name
+                code_buffer.write(l) 
+                 
+        except (AttributeError,e):
+            #print "Only new style classes are supported, inherit from object!"
+            pass            
+        finally:
+            code_buffer.write("{\n")
 
         """
         # getsourcelines gives back a tuple like
