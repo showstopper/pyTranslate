@@ -1,5 +1,6 @@
-class A:
-    pass
+class A(object):
+    def bark():
+        print "ohai"
 
-class B:
+class B(object):
     pass

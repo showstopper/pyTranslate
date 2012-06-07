@@ -9,6 +9,11 @@ if __name__ == '__main__':
     code_buffer = cStringIO.StringIO()
     for class_decl in inspect.getmembers(module, inspect.isclass):
 
+        try:
+            print class_decl[1].__class__
+        except AttributeError:
+            print "Only new style classes are supported, inherit from object!"
+
         class_name = class_decl[0] 
         l = "%s: class {\n" % (class_name)
         code_buffer.write(l) # class name, e.g. "A: class {"
